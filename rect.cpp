@@ -168,3 +168,15 @@ void Rect::draw() const {
     glVertex2i(getRightX(),getTopY());
     glEnd();
 }
+
+void Rect::drawTrapezoid() {
+    glBegin(GL_QUADS);
+    glColor3f(fill.red, fill.green, fill.blue);
+    int centerX = getCenterX();
+    int centerY = getCenterY();
+    glVertex2i(centerX + 5, centerY - 1);
+    glVertex2i(centerX - 5, centerY - 1);
+    glVertex2i(centerX - 10, centerY + 2);
+    glVertex2i(centerX + 10, centerY + 2);
+
+}

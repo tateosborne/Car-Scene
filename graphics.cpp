@@ -15,12 +15,13 @@ const color magenta(1, 0, 1);
 const color cyan (0, 1, 1);
 const color silver(191/255.0,193/255.0,194/255.0);
 const color asphalt(82/255.0,77/255.0,80/255.0);
-const color skyBlue(77/255.0, 213/255.0, 240/255.0);
-const color darkBlue(1/255.0, 110/255.0, 214/255.0);
+const color skyBlue(135/255.0, 206/255.0, 235/255.0);
+const color raspberry(227/255.0, 11/255.0, 93/255.0);
 const color purple(119/255.0, 11/255.0, 224/255.0);
 const color orangeYellow(255/255.0, 174/255.0, 66/255.0);
 
 Rect carBase;
+Rect carRoof;
 Circle rearTyre;
 Circle rearInnerWheel;
 Circle frontTyre;
@@ -32,23 +33,29 @@ Rect user;
 Rect whiteBlock;
 
 void initCarBase() {
-    carBase.setCenter(250, 500);
-    carBase.setSize(width, height/5);
-    carBase.setColor(darkBlue);
+    carBase.setCenter(200, 300);
+    carBase.setSize(200, 100);
+    carBase.setColor(raspberry);
+}
+
+void initCarRoof() {
+    carRoof.setCenter(200, 300);
+    carRoof.setSize(100, 200);
+    carRoof.setColor(raspberry);
 }
 
 void initWheel() {
-    rearTyre.setCenter(150, 500);
+    rearTyre.setCenter(150, 300);
     rearTyre.setRadius(20);
     rearTyre.setColor(black);
-    rearInnerWheel.setCenter(150, 500);
+    rearInnerWheel.setCenter(150, 300);
     rearInnerWheel.setRadius(10);
     rearInnerWheel.setColor(silver);
 
     frontTyre.setCenter(250, 500);
     frontTyre.setRadius(20);
     frontTyre.setColor(black);
-    frontInnerWheel.setCenter(250, 500);
+    frontInnerWheel.setCenter(250, 300);
     frontInnerWheel.setRadius(10);
     frontInnerWheel.setColor(silver);
 
@@ -56,7 +63,7 @@ void initWheel() {
 
 void initRoad() {
     road.setCenter(250, 500);
-    road.setSize(width, height/5);
+    road.setSize(width, height/3);
     road.setColor(asphalt);
 }
 
@@ -87,16 +94,13 @@ void initRoadLines() {
     int totalLineWidth = 0;
     dimensions lineSize = {5, 50};
     while (totalLineWidth < width + 50) {
-        roadLines.push_back(Rect(orangeYellow,
-                                  totalLineWidth+(lineSize.width/2)+25,
-                                  height-((lineSize.height/2)),
-                                  lineSize));
-        totalLineWidth += lineSize.width + 25;
+        roadLines.push_back(Rect(orangeYellow, totalLineWidth, 450));
+        totalLineWidth += 45;
     }
 }
 
 void initUser() {
-    // TODO: Initialize the user to be a 20x20 white block
+    // Initialize the user to be a 20x20 white block
     // centered in the top left corner of the graphics window
     whiteBlock.setCenter(0,0);
     whiteBlock.setWidth(10);
@@ -109,6 +113,7 @@ void init() {
     height = 500;
     srand(time(0));
     initCarBase();
+    initCarRoof();
     initWheel();
     initRoad();
     initClouds();
@@ -143,57 +148,30 @@ void display() {
      * Draw here
      */
 
-    // TODO: Add logic to draw the grass, the user, and the
-    // rest of the buildings. Note that the order of drawing
-    // matters because whatever is drawn last appears on top.
-    // Note that darkBlue buildings turn cyan when overlapping
-    // with the user, and purple buildings turn magenta.
-
     for (unique_ptr<Shape> &s : clouds) {
         // #polymorphism
         s->draw();
     }
 
-    for (Rect &r : buildings3) {
-        if (r.isOverlapping(user)) {
-            r.setColor(magenta);
-        } else {
-            r.setColor(purple);
-        }
-        r.draw();
+    road.setColor(asphalt);
+    road.draw();
+
+    for (Rect &r : roadLines) {
+        r.drawTrapezoid();
     }
 
-    for (Rect &r : buildings2) {
-        if (r.isOverlapping(user)) {
-            r.setColor(cyan);
-        } else {
-            r.setColor(darkBlue);
-        }
-        r.draw();
-    }
+    carBase.setColor(raspberry);
+    carBase.draw();
 
-    grass.setColor(grassGreen);
-    grass.draw();
+    carRoof.setColor(raspberry);
+    carRoof.draw();
 
-    for (Rect &r : buildings1) {
-        if (r.isOverlapping(user)) {
-            r.setColor(orange);
-        } else {
-            r.setColor(brickRed);
-        }
-        r.draw();
-    }
+    rearTyre.setColor(black);
+    frontTyre.setColor(black);
+    rearInnerWheel.setColor(silver);
+    frontInnerWheel.setColor(silver);
 
     whiteBlock.draw();
-
-    // Check if the user is overlapping with the cloud
-    // Only check the Rect object within the cloud
-    for (int i = 3; i < clouds.size(); i += 4) {
-        if (dynamic_cast<Rect&>(*clouds[i]).isOverlapping(user)){
-            glutDestroyWindow(wd);
-            exit(0);
-        }
-    }
     
     glFlush();  // Render now
 }
@@ -260,23 +238,19 @@ void cloudTimer(int dummy) {
     glutTimerFunc(50, cloudTimer, dummy);
 }
 
-void buildingTimer(int dummy) {
-    // TODO: Make the other two vectors of buildings move.
-    // The larger the buildings, the slower they should move.
-
-    for (int i = 0; i < buildings1.size(); ++i) {
-        // Move all the red buildings to the left
-        buildings1[i].moveX(-3);
+void roadLineTimer(int dummy) {
+    for (int i = 0; i < roadLines.size(); ++i) {
+        roadLines[i].moveX(-3);
         // If a shape has moved off the screen
-        if (buildings1[i].getCenterX() < -(buildings1[i].getWidth()/2)) {
+        if (roadLines[i].getCenterX() < -(roadLines[i].getWidth()/2)) {
             // Set it to the right of the screen so that it passes through again
-            int buildingOnLeft = (i == 0) ? buildings1.size()-1 : i - 1;
-            buildings1[i].setCenterX(buildings1[buildingOnLeft].getCenterX() + buildings1[buildingOnLeft].getWidth()/2 + buildings1[i].getWidth()/2 + 5);
+            int lineOnLeft = (i == 0) ? roadLines.size()-1 : i - 1;
+            roadLines[i].setCenterX(roadLines[lineOnLeft].getCenterX() + roadLines[lineOnLeft].getWidth()/2 + roadLines[i].getWidth()/2 + 5);
         }
     }
 
     glutPostRedisplay();
-    glutTimerFunc(30, buildingTimer, dummy);
+    glutTimerFunc(30, roadLineTimer, dummy);
 }
 
 /* Main function: GLUT runs as a console application starting at main()  */
@@ -291,7 +265,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize((int)width, (int)height);
     glutInitWindowPosition(100, 200); // Position the window's initial top-left corner
     /* create the window and store the handle to it */
-    wd = glutCreateWindow("Runner" /* title */ );
+    wd = glutCreateWindow("Car Scene" /* title */ );
     
     // Register callback handler for window re-paint event
     glutDisplayFunc(display);
@@ -314,7 +288,7 @@ int main(int argc, char** argv) {
     
     // handles timer
     glutTimerFunc(0, cloudTimer, 0);
-    glutTimerFunc(0, buildingTimer, 0);
+    glutTimerFunc(0, roadLineTimer, 0);
     
     // Enter the event-processing loop
     glutMainLoop();
