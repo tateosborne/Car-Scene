@@ -14,6 +14,7 @@ const color yellow(1, 1, 0);
 const color magenta(1, 0, 1);
 const color cyan (0, 1, 1);
 const color silver(191/255.0,193/255.0,194/255.0);
+const color glass(240/255.0, 255/255.0, 255/255.0);
 const color asphalt(82/255.0,77/255.0,80/255.0);
 const color skyBlue(135/255.0, 206/255.0, 235/255.0);
 const color raspberry(227/255.0, 11/255.0, 93/255.0);
@@ -22,6 +23,8 @@ const color orangeYellow(255/255.0, 174/255.0, 66/255.0);
 
 Rect carBase;
 Rect carRoof;
+Rect windshield;
+Circle rearWindshield;
 Circle rearTyre;
 Circle rearInnerWheel;
 Circle frontTyre;
@@ -33,15 +36,24 @@ Rect user;
 Rect whiteBlock;
 
 void initCarBase() {
-    carBase.setCenter(200, 300);
-    carBase.setSize(200, 100);
+    carBase.setCenter(200, 390);
+    carBase.setSize(240, 65);
     carBase.setColor(raspberry);
 }
 
 void initCarRoof() {
-    carRoof.setCenter(200, 300);
-    carRoof.setSize(100, 200);
+    carRoof.setCenter(180, 360);
+    carRoof.setSize(100, 80);
     carRoof.setColor(raspberry);
+}
+
+void initWindshield() {
+    windshield.setCenter(230, 360);
+    windshield.setColor(glass);
+
+    rearWindshield.setCenter(140, 360);
+    rearWindshield.setColor(glass);
+    rearWindshield.setRadius(35);
 }
 
 void initWheel() {
@@ -87,12 +99,26 @@ void initClouds() {
     clouds.push_back(make_unique<Circle>(white, 480, 50, 20));
     clouds.push_back(make_unique<Circle>(white, 470, 40, 20));
     clouds.push_back(make_unique<Rect>(white, 465, 55, cloudBottom));
+    // Fourth cloud
+    clouds.push_back(make_unique<Circle>(white, 350, 200, 20));
+    clouds.push_back(make_unique<Circle>(white, 380, 200, 20));
+    clouds.push_back(make_unique<Circle>(white, 370, 190, 20));
+    clouds.push_back(make_unique<Rect>(white, 365, 205, cloudBottom));
+    // Fifth cloud
+    clouds.push_back(make_unique<Circle>(white, 250, 180, 20));
+    clouds.push_back(make_unique<Circle>(white, 280, 180, 20));
+    clouds.push_back(make_unique<Circle>(white, 270, 170, 20));
+    clouds.push_back(make_unique<Rect>(white, 265, 185, cloudBottom));
+    // Sixth cloud
+    clouds.push_back(make_unique<Circle>(white, 20, 150, 20));
+    clouds.push_back(make_unique<Circle>(white, 50, 150, 20));
+    clouds.push_back(make_unique<Circle>(white, 40, 140, 20));
+    clouds.push_back(make_unique<Rect>(white, 35, 155, cloudBottom));
 
 }
 
 void initRoadLines() {
     int totalLineWidth = 0;
-    dimensions lineSize = {5, 50};
     while (totalLineWidth < width + 50) {
         roadLines.push_back(Rect(orangeYellow, totalLineWidth, 450));
         totalLineWidth += 45;
@@ -112,6 +138,7 @@ void init() {
     width = 500;
     height = 500;
     srand(time(0));
+    initWindshield();
     initCarBase();
     initCarRoof();
     initWheel();
@@ -155,6 +182,12 @@ void display() {
 
     road.setColor(asphalt);
     road.draw();
+
+    windshield.setColor(glass);
+    windshield.drawDiamond();
+
+    rearWindshield.setColor(glass);
+    rearWindshield.draw();
 
     for (Rect &r : roadLines) {
         r.drawTrapezoid();

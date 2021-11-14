@@ -66,6 +66,7 @@ public:
     /* Draw */
     void draw() const override;
     void drawTrapezoid();
+    void drawDiamond();
 
 };
 

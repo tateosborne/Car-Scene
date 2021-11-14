@@ -180,3 +180,14 @@ void Rect::drawTrapezoid() {
     glVertex2i(centerX + 10, centerY + 2);
 
 }
+
+void Rect::drawDiamond() {
+    glBegin(GL_QUADS);
+    glColor3f(fill.red, fill.green, fill.blue);
+    int centerX = getCenterX();
+    int centerY = getCenterY();
+    glVertex2i(centerX, centerY - 40);
+    glVertex2i(centerX - 50, centerY);
+    glVertex2i(centerX, centerY + 40);
+    glVertex2i(centerX + 50, centerY);
+}
