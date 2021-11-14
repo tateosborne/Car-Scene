@@ -119,7 +119,7 @@ void initClouds() {
 
 void initRoadLines() {
     int totalLineWidth = 0;
-    while (totalLineWidth < width + 50) {
+    while (totalLineWidth < width + 100) {
         roadLines.push_back(Rect(orangeYellow, totalLineWidth, 450));
         totalLineWidth += 45;
     }
@@ -273,7 +273,7 @@ void cloudTimer(int dummy) {
 
 void roadLineTimer(int dummy) {
     for (int i = 0; i < roadLines.size(); ++i) {
-        roadLines[i].moveX(-3);
+        roadLines[i].moveX(-2);
         // If a shape has moved off the screen
         if (roadLines[i].getCenterX() < -(roadLines[i].getWidth()/2)) {
             // Set it to the right of the screen so that it passes through again
