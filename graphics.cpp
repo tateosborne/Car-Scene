@@ -34,7 +34,7 @@ const color skyBlue(135/255.0, 206/255.0, 235/255.0);
 const color orangeYellow(255/255.0, 174/255.0, 66/255.0);
 const color paleYellow(255/255.0, 255/255.0, 191/255.0);
 const color palePurple(145/255.0, 128/255.0, 191/255.0);
-const color paleRed(221/255.0, 68/255.0, 17/255.0);
+const color paleRed(222/255.0, 68/255.0, 17/255.0);
 
 Rect carBase;
 Rect carRoof;
