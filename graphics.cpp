@@ -579,7 +579,7 @@ void signTimer(int dummy) {
     if (bearing == east) {
         for (unique_ptr<Shape> &sign : roadSign) {
             // Move all the clouds to the left
-            sign->moveX(-5);
+            sign->moveX(-7);
             // If a shape has moved off the screen
             if (sign->getCenterX() < -1000) {
                 // Set it to the right of the screen so that it passes through again
@@ -590,7 +590,7 @@ void signTimer(int dummy) {
     if (bearing == west) {
         for (unique_ptr<Shape> &sign : roadSign) {
             // Move all the clouds to the left
-            sign->moveX(5);
+            sign->moveX(7);
             // If a shape has moved off the screen
             if (sign->getCenterX() > 1000) {
                 // Set it to the right of the screen so that it passes through again
@@ -606,7 +606,7 @@ void signTimer(int dummy) {
 void roadLineTimer(int dummy) {
     if (bearing == east) {
         for (Rect &line : roadLines) {
-            line.moveX(-6);
+            line.moveX(-8);
             // If a shape has moved off the screen
             if (line.getCenterX() < -20) {
                 line.setCenter(520, line.getCenterY());
@@ -615,7 +615,7 @@ void roadLineTimer(int dummy) {
     }
     if (bearing == west) {
         for (Rect &line : roadLines) {
-            line.moveX(6);
+            line.moveX(8);
             // If a shape has moved off the screen
             if (line.getCenterX() > 520) {
                 line.setCenter(-20, line.getCenterY());
