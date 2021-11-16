@@ -22,8 +22,8 @@ void initCarRoof();
 void initWheel();
 void initRoad();
 void initClouds();
+void initSign();
 void initRoadLines();
-void initUser();
 void init();
 
 // Initialize OpenGL Graphics
@@ -42,6 +42,9 @@ void kbdS(int key, int x, int y);
 
 // Handle "mouse cursor moved" events 
 void cursor(int x, int y);
+
+// Moves car according to keyboard input
+void relocateCar();
 
 // Calls itself after a specified time
 void timer(int dummy);
