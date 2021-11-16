@@ -178,9 +178,9 @@ void initSign() {
 void initRoadLines() {
     roadLines.clear();
     int totalLineWidth = 0;
-    while (totalLineWidth < width + 100) {
+    while (totalLineWidth < width + 40) {
         roadLines.push_back(Rect(orangeYellow, totalLineWidth, 450));
-        totalLineWidth += 45;
+        totalLineWidth += 50;
     }
 }
 
