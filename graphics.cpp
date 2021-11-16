@@ -187,7 +187,6 @@ void initRoadLines() {
 void init() {
     width = 500;
     height = 500;
-    srand(time(0));
     initSun();
     initWindshield();
     initCarBase();
