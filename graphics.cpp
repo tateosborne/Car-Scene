@@ -6,6 +6,16 @@
 #include <vector>
 using namespace std;
 
+enum roadLane {
+    top,
+    bottom
+};
+
+enum direction {
+    east,
+    west
+};
+
 GLdouble width, height;
 int wd;
 const color white(1, 1, 1);
@@ -36,55 +46,115 @@ Rect road;
 vector<unique_ptr<Shape>> clouds;
 vector<Rect> roadLines;
 Rect user;
-Rect whiteBlock;
+roadLane lane = top;
+direction bearing = east;
+int shiftX = 500;
+int shiftY = 40;
 
 void initCarBase() {
-    carBase.setCenter(200, 390);
-    carBase.setSize(240, 65);
-    carBase.setColor(raspberry);
+    if (bearing == east) {
+        carBase.setCenter(200, 390);
+        carBase.setSize(240, 65);
+        carBase.setColor(raspberry);
 
-    headlight.setCenter(310, 367.5);
-    headlight.setSize(10,10);
-    headlight.setColor(yellow);
+        headlight.setCenter(310, 367);
+        headlight.setSize(10, 10);
+        headlight.setColor(yellow);
+    }
+    if (bearing == west) {
+        carBase.setCenter(shiftX - 200, 390);
+        carBase.setSize(240, 65);
+        carBase.setColor(raspberry);
+
+        headlight.setCenter(shiftX - 310, 367);
+        headlight.setSize(10, 10);
+        headlight.setColor(yellow);
+    }
 }
 
 void initCarRoof() {
-    carRoof.setCenter(180, 360);
-    carRoof.setSize(100, 80);
-    carRoof.setColor(raspberry);
+    if (bearing == east) {
+        carRoof.setCenter(180, 360);
+        carRoof.setSize(100, 80);
+        carRoof.setColor(raspberry);
 
-    rearWindow.setCenter(160, 340);
-    rearWindow.setSize(35, 30);
-    rearWindow.setColor(glass);
+        rearWindow.setCenter(160, 340);
+        rearWindow.setSize(35, 30);
+        rearWindow.setColor(glass);
 
-    frontWindow.setCenter(200, 340);
-    frontWindow.setSize(35, 30);
-    frontWindow.setColor(glass);
+        frontWindow.setCenter(200, 340);
+        frontWindow.setSize(35, 30);
+        frontWindow.setColor(glass);
+    }
+    if (bearing == west) {
+        carRoof.setCenter(shiftX - 180, 360);
+        carRoof.setSize(100, 80);
+        carRoof.setColor(raspberry);
+
+        rearWindow.setCenter(shiftX - 160, 340);
+        rearWindow.setSize(35, 30);
+        rearWindow.setColor(glass);
+
+        frontWindow.setCenter(shiftX - 200, 340);
+        frontWindow.setSize(35, 30);
+        frontWindow.setColor(glass);
+    }
 }
 
 void initWindshield() {
-    windshield.setCenter(230, 360);
-    windshield.setColor(glass);
+    if (bearing == east) {
+        windshield.setCenter(230, 360);
+        windshield.setColor(glass);
 
-    rearWindshield.setCenter(140, 360);
-    rearWindshield.setColor(glass);
-    rearWindshield.setRadius(35);
+        rearWindshield.setCenter(140, 360);
+        rearWindshield.setColor(glass);
+        rearWindshield.setRadius(35);
+    }
+    if (bearing == west) {
+        windshield.setCenter(shiftX - 230, 360);
+        windshield.setColor(glass);
+
+        rearWindshield.setCenter(shiftX - 140, 360);
+        rearWindshield.setColor(glass);
+        rearWindshield.setRadius(35);
+    }
 }
 
 void initWheel() {
-    rearTyre.setCenter(125, 425);
-    rearTyre.setRadius(30);
-    rearTyre.setColor(black);
-    rearInnerWheel.setCenter(125, 425);
-    rearInnerWheel.setRadius(15);
-    rearInnerWheel.setColor(silver);
+    if (bearing == east) {
+        rearTyre.setCenter(125, 420);
+        rearTyre.setRadius(30);
+        rearTyre.setColor(black);
 
-    frontTyre.setCenter(275, 425);
-    frontTyre.setRadius(30);
-    frontTyre.setColor(black);
-    frontInnerWheel.setCenter(275, 425);
-    frontInnerWheel.setRadius(15);
-    frontInnerWheel.setColor(silver);
+        rearInnerWheel.setCenter(125, 420);
+        rearInnerWheel.setRadius(15);
+        rearInnerWheel.setColor(silver);
+
+        frontTyre.setCenter(275, 420);
+        frontTyre.setRadius(30);
+        frontTyre.setColor(black);
+
+        frontInnerWheel.setCenter(275, 420);
+        frontInnerWheel.setRadius(15);
+        frontInnerWheel.setColor(silver);
+    }
+    if (bearing == west) {
+        rearTyre.setCenter(shiftX - 125, 420);
+        rearTyre.setRadius(30);
+        rearTyre.setColor(black);
+
+        rearInnerWheel.setCenter(shiftX - 125, 420);
+        rearInnerWheel.setRadius(15);
+        rearInnerWheel.setColor(silver);
+
+        frontTyre.setCenter(shiftX - 275, 420);
+        frontTyre.setRadius(30);
+        frontTyre.setColor(black);
+
+        frontInnerWheel.setCenter(shiftX - 275, 420);
+        frontInnerWheel.setRadius(15);
+        frontInnerWheel.setColor(silver);
+    }
 }
 
 void initRoad() {
@@ -94,8 +164,6 @@ void initRoad() {
 }
 
 void initClouds() {
-    // Note: the Rect objects that make up the flat bottom of the clouds
-    // won't appear until you implement the Rect::draw method.
     clouds.clear();
     dimensions cloudBottom(30, 30);
     // First cloud
@@ -132,20 +200,12 @@ void initClouds() {
 }
 
 void initRoadLines() {
+    roadLines.clear();
     int totalLineWidth = 0;
     while (totalLineWidth < width + 100) {
         roadLines.push_back(Rect(orangeYellow, totalLineWidth, 450));
         totalLineWidth += 45;
     }
-}
-
-void initUser() {
-    // Initialize the user to be a 20x20 white block
-    // centered in the top left corner of the graphics window
-    whiteBlock.setCenter(0,0);
-    whiteBlock.setWidth(10);
-    whiteBlock.setHeight(10);
-    whiteBlock.setColor(white);
 }
 
 void init() {
@@ -159,7 +219,6 @@ void init() {
     initRoad();
     initClouds();
     initRoadLines();
-    initUser();
 }
 
 /* Initialize OpenGL Graphics */
@@ -173,7 +232,7 @@ void initGL() {
 void display() {
     // Tell OpenGL to use the whole window for drawing
     glViewport(0, 0, width, height); // DO NOT CHANGE THIS LINE (unless you are running Catalina on Mac)
-    
+
     // Do an orthographic parallel projection with the coordinate
     // system set to first quadrant, limited by screen/window size
     glMatrixMode(GL_PROJECTION); // DO NOT CHANGE THIS LINE
@@ -182,9 +241,9 @@ void display() {
 
     // Clear the color buffer with current clearing color
     glClear(GL_COLOR_BUFFER_BIT); // DO NOT CHANGE THIS LINE
-    
+
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // DO NOT CHANGE THIS LINE
-    
+
     /*
      * Draw here
      */
@@ -197,41 +256,101 @@ void display() {
     road.setColor(asphalt);
     road.draw();
 
-    windshield.setColor(glass);
-    windshield.drawDiamond();
-
     for (Rect &r : roadLines) {
         r.drawTrapezoid();
     }
 
-    rearWindshield.setColor(glass);
-    rearWindshield.draw();
+    if (lane == top) {
+        windshield.setCenterY( 360);
+        windshield.setColor(glass);
+        windshield.drawDiamond();
 
-    carBase.setColor(raspberry);
-    carBase.draw();
+        rearWindshield.setCenterY(360);
+        rearWindshield.setColor(glass);
+        rearWindshield.draw();
 
-    carRoof.setColor(raspberry);
-    carRoof.draw();
+        carBase.setCenterY(390);
+        carBase.setColor(raspberry);
+        carBase.draw();
 
-    rearWindow.setColor(glass);
-    rearWindow.draw();
-    frontWindow.setColor(glass);
-    frontWindow.draw();
+        carRoof.setCenterY(360);
+        carRoof.setColor(raspberry);
+        carRoof.draw();
 
-    headlight.setColor(yellow);
-    headlight.draw();
+        rearWindow.setCenterY(340);
+        rearWindow.setColor(glass);
+        rearWindow.draw();
 
-    rearTyre.setColor(black);
-    rearTyre.draw();
-    frontTyre.setColor(black);
-    frontTyre.draw();
-    rearInnerWheel.setColor(silver);
-    rearInnerWheel.draw();
-    frontInnerWheel.setColor(silver);
-    frontInnerWheel.draw();
+        frontWindow.setCenterY(340);
+        frontWindow.setColor(glass);
+        frontWindow.draw();
 
-    whiteBlock.draw();
-    
+        headlight.setCenterY(367);
+        headlight.setColor(yellow);
+        headlight.draw();
+
+        rearTyre.setCenterY(420);
+        rearTyre.setColor(black);
+        rearTyre.draw();
+
+        frontTyre.setCenterY(420);
+        frontTyre.setColor(black);
+        frontTyre.draw();
+
+        rearInnerWheel.setCenterY(420);
+        rearInnerWheel.setColor(silver);
+        rearInnerWheel.draw();
+
+        frontInnerWheel.setCenterY(420);
+        frontInnerWheel.setColor(silver);
+        frontInnerWheel.draw();
+    }
+    if (lane == bottom) {
+        windshield.setCenterY(360 + shiftY);
+        windshield.setColor(glass);
+        windshield.drawDiamond();
+
+        rearWindshield.setCenterY(360 + shiftY);
+        rearWindshield.setColor(glass);
+        rearWindshield.draw();
+
+        carBase.setCenterY(390 + shiftY);
+        carBase.setColor(raspberry);
+        carBase.draw();
+
+        carRoof.setCenterY(360 + shiftY);
+        carRoof.setColor(raspberry);
+        carRoof.draw();
+
+        rearWindow.setCenterY(340 + shiftY);
+        rearWindow.setColor(glass);
+        rearWindow.draw();
+
+        frontWindow.setCenterY(340 + shiftY);
+        frontWindow.setColor(glass);
+        frontWindow.draw();
+
+        headlight.setCenterY(367 + shiftY);
+        headlight.setColor(yellow);
+        headlight.draw();
+
+        rearTyre.setCenterY(420 + shiftY);
+        rearTyre.setColor(black);
+        rearTyre.draw();
+
+        frontTyre.setCenterY(420 + shiftY);
+        frontTyre.setColor(black);
+        frontTyre.draw();
+
+        rearInnerWheel.setCenterY(420 + shiftY);
+        rearInnerWheel.setColor(silver);
+        rearInnerWheel.draw();
+
+        frontInnerWheel.setCenterY(420 + shiftY);
+        frontInnerWheel.setColor(silver);
+        frontInnerWheel.draw();
+    }
+
     glFlush();  // Render now
 }
 
@@ -249,16 +368,16 @@ void kbd(unsigned char key, int x, int y) {
 void kbdS(int key, int x, int y) {
     switch(key) {
         case GLUT_KEY_DOWN:
-            
+            lane = bottom;
             break;
         case GLUT_KEY_LEFT:
-            
+            bearing = west;
             break;
         case GLUT_KEY_RIGHT:
-            
+            bearing = east;
             break;
         case GLUT_KEY_UP:
-            
+            lane = top;
             break;
     }
     
@@ -266,11 +385,7 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    // TODO: Set the user's center point to be the coordinates
-    // passed in as parameters to this function. This will make
-    // the user block move with the mouse.
     user.setCenter(x, y);
-    whiteBlock.setCenter(x, y);
     glutPostRedisplay();
 }
 
@@ -283,13 +398,26 @@ void mouse(int button, int state, int x, int y) {
 
 void cloudTimer(int dummy) {
 
-    for (unique_ptr<Shape> &s : clouds) {
-        // Move all the clouds to the left
-        s->moveX(-1);
-        // If a shape has moved off the screen
-        if (s->getCenterX() < -20) {
-            // Set it to the right of the screen so that it passes through again
-            s->setCenterX(520);
+    if (bearing == east) {
+        for (unique_ptr<Shape> &s : clouds) {
+            // Move all the clouds to the left
+            s->moveX(-1);
+            // If a shape has moved off the screen
+            if (s->getCenterX() < -20) {
+                // Set it to the right of the screen so that it passes through again
+                s->setCenterX(520);
+            }
+        }
+    }
+    if (bearing == west) {
+        for (unique_ptr<Shape> &s : clouds) {
+            // Move all the clouds to the left
+            s->moveX(1);
+            // If a shape has moved off the screen
+            if (s->getCenterX() > 520) {
+                // Set it to the right of the screen so that it passes through again
+                s->setCenterX(-20);
+            }
         }
     }
     
@@ -298,17 +426,23 @@ void cloudTimer(int dummy) {
 }
 
 void roadLineTimer(int dummy) {
-    for (int i = 0; i < roadLines.size(); ++i) {
-        roadLines[i].moveX(-2);
-        // If a shape has moved off the screen
-        if (roadLines[i].getCenterX() < -20) {
-            roadLines[i].setCenter(520, roadLines[i].getCenterY());
+    if (bearing == east) {
+        for (Rect &line : roadLines) {
+            line.moveX(-4);
+            // If a shape has moved off the screen
+            if (line.getCenterX() < -20) {
+                line.setCenter(520, line.getCenterY());
+            }
         }
-//        if (roadLines[i].getCenterX() < -(roadLines[i].getWidth()/2)) {
-//            // Set it to the right of the screen so that it passes through again
-//            int lineOnLeft = (i == 0) ? roadLines.size()-1 : i - 1;
-//            roadLines[i].setCenterX(roadLines[lineOnLeft].getCenterX() + roadLines[lineOnLeft].getWidth()/2 + roadLines[i].getWidth()/2 + 5);
-//        }
+    }
+    if (bearing == west) {
+        for (Rect &line : roadLines) {
+            line.moveX(4);
+            // If a shape has moved off the screen
+            if (line.getCenterX() > 520) {
+                line.setCenter(-20, line.getCenterY());
+            }
+        }
     }
 
     glutPostRedisplay();
