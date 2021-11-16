@@ -48,7 +48,9 @@ void cursor(int x, int y);
 void relocateCar();
 
 // Calls itself after a specified time
-void timer(int dummy);
+void cloudTimer(int dummy);
+void signTimer(int dummy);
+void roadLineTimer(int dummy);
 
 // Handle mouse button pressed and released events
 void mouse(int button, int state, int x, int y);
