@@ -17,5 +17,6 @@ The only way to exit the screen is to press the `esc` button on your keyboard.
 ```
 Personally, I believe that I deserve the full 50 points on this project. I demonstrate my understanding of locating
 different objects, calling modifiers on these objects, showing objects that move (i.e. once off the screen, it wraps
-around to pass through again), and the project is robust. Lastly, (I think) that the project looks pretty cool too.
+around to pass through again), and the project is robust. I also have multiple objects in my graphics scene, and have
+more keyboard listeners than necessary for the project. Lastly, (I think) that the project looks pretty cool too.
 ```
