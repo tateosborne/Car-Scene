@@ -25,6 +25,8 @@ Rect carBase;
 Rect carRoof;
 Rect windshield;
 Rect headlight;
+Rect rearWindow;
+Rect frontWindow;
 Circle rearWindshield;
 Circle rearTyre;
 Circle rearInnerWheel;
@@ -50,6 +52,14 @@ void initCarRoof() {
     carRoof.setCenter(180, 360);
     carRoof.setSize(100, 80);
     carRoof.setColor(raspberry);
+
+    rearWindow.setCenter(160, 340);
+    rearWindow.setSize(35, 30);
+    rearWindow.setColor(glass);
+
+    frontWindow.setCenter(200, 340);
+    frontWindow.setSize(35, 30);
+    frontWindow.setColor(glass);
 }
 
 void initWindshield() {
@@ -202,6 +212,11 @@ void display() {
 
     carRoof.setColor(raspberry);
     carRoof.draw();
+
+    rearWindow.setColor(glass);
+    rearWindow.draw();
+    frontWindow.setColor(glass);
+    frontWindow.draw();
 
     headlight.setColor(yellow);
     headlight.draw();
