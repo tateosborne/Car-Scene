@@ -24,6 +24,7 @@ const color orangeYellow(255/255.0, 174/255.0, 66/255.0);
 Rect carBase;
 Rect carRoof;
 Rect windshield;
+Rect headlight;
 Circle rearWindshield;
 Circle rearTyre;
 Circle rearInnerWheel;
@@ -39,6 +40,10 @@ void initCarBase() {
     carBase.setCenter(200, 390);
     carBase.setSize(240, 65);
     carBase.setColor(raspberry);
+
+    headlight.setCenter(310, 367.5);
+    headlight.setSize(10,10);
+    headlight.setColor(yellow);
 }
 
 void initCarRoof() {
@@ -57,20 +62,19 @@ void initWindshield() {
 }
 
 void initWheel() {
-    rearTyre.setCenter(150, 300);
-    rearTyre.setRadius(20);
+    rearTyre.setCenter(125, 425);
+    rearTyre.setRadius(30);
     rearTyre.setColor(black);
-    rearInnerWheel.setCenter(150, 300);
-    rearInnerWheel.setRadius(10);
+    rearInnerWheel.setCenter(125, 425);
+    rearInnerWheel.setRadius(15);
     rearInnerWheel.setColor(silver);
 
-    frontTyre.setCenter(250, 500);
-    frontTyre.setRadius(20);
+    frontTyre.setCenter(275, 425);
+    frontTyre.setRadius(30);
     frontTyre.setColor(black);
-    frontInnerWheel.setCenter(250, 300);
-    frontInnerWheel.setRadius(10);
+    frontInnerWheel.setCenter(275, 425);
+    frontInnerWheel.setRadius(15);
     frontInnerWheel.setColor(silver);
-
 }
 
 void initRoad() {
@@ -186,12 +190,12 @@ void display() {
     windshield.setColor(glass);
     windshield.drawDiamond();
 
-    rearWindshield.setColor(glass);
-    rearWindshield.draw();
-
     for (Rect &r : roadLines) {
         r.drawTrapezoid();
     }
+
+    rearWindshield.setColor(glass);
+    rearWindshield.draw();
 
     carBase.setColor(raspberry);
     carBase.draw();
@@ -199,10 +203,17 @@ void display() {
     carRoof.setColor(raspberry);
     carRoof.draw();
 
+    headlight.setColor(yellow);
+    headlight.draw();
+
     rearTyre.setColor(black);
+    rearTyre.draw();
     frontTyre.setColor(black);
+    frontTyre.draw();
     rearInnerWheel.setColor(silver);
+    rearInnerWheel.draw();
     frontInnerWheel.setColor(silver);
+    frontInnerWheel.draw();
 
     whiteBlock.draw();
     
@@ -275,11 +286,14 @@ void roadLineTimer(int dummy) {
     for (int i = 0; i < roadLines.size(); ++i) {
         roadLines[i].moveX(-2);
         // If a shape has moved off the screen
-        if (roadLines[i].getCenterX() < -(roadLines[i].getWidth()/2)) {
-            // Set it to the right of the screen so that it passes through again
-            int lineOnLeft = (i == 0) ? roadLines.size()-1 : i - 1;
-            roadLines[i].setCenterX(roadLines[lineOnLeft].getCenterX() + roadLines[lineOnLeft].getWidth()/2 + roadLines[i].getWidth()/2 + 5);
+        if (roadLines[i].getCenterX() < -20) {
+            roadLines[i].setCenter(520, roadLines[i].getCenterY());
         }
+//        if (roadLines[i].getCenterX() < -(roadLines[i].getWidth()/2)) {
+//            // Set it to the right of the screen so that it passes through again
+//            int lineOnLeft = (i == 0) ? roadLines.size()-1 : i - 1;
+//            roadLines[i].setCenterX(roadLines[lineOnLeft].getCenterX() + roadLines[lineOnLeft].getWidth()/2 + roadLines[i].getWidth()/2 + 5);
+//        }
     }
 
     glutPostRedisplay();

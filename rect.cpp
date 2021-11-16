@@ -178,6 +178,7 @@ void Rect::drawTrapezoid() {
     glVertex2i(centerX - 5, centerY - 1);
     glVertex2i(centerX - 10, centerY + 2);
     glVertex2i(centerX + 10, centerY + 2);
+    glEnd();
 
 }
 
@@ -190,4 +191,5 @@ void Rect::drawDiamond() {
     glVertex2i(centerX - 50, centerY);
     glVertex2i(centerX, centerY + 40);
     glVertex2i(centerX + 50, centerY);
+    glEnd();
 }
