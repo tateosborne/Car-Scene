@@ -65,6 +65,15 @@ void initSun() {
     sun.setColor(yellow);
 }
 
+void initWindshield() {
+    windshield.setCenter(230, 365);
+    windshield.setColor(glass);
+
+    rearWindshield.setCenter(140, 360);
+    rearWindshield.setRadius(35);
+    rearWindshield.setColor(glass);
+}
+
 void initCarBase() {
 
     carBase.setCenter(200, 390);
@@ -92,15 +101,6 @@ void initCarRoof() {
     frontWindow.setCenter(200, 340);
     frontWindow.setSize(35, 30);
     frontWindow.setColor(glass);
-}
-
-void initWindshield() {
-    windshield.setCenter(230, 365);
-    windshield.setColor(glass);
-
-    rearWindshield.setCenter(140, 360);
-    rearWindshield.setRadius(35);
-    rearWindshield.setColor(glass);
 }
 
 void initWheel() {
@@ -189,9 +189,9 @@ void init() {
     height = 500;
     srand(time(0));
     initSun();
+    initWindshield();
     initCarBase();
     initCarRoof();
-    initWindshield();
     initWheel();
     initRoad();
     initClouds();
