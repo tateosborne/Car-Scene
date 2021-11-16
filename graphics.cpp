@@ -243,11 +243,11 @@ void display() {
     road.draw();
 
     for (Rect &line : roadLines) {
-        line.drawTrapezoid();
+        line.drawTrapezoid(5, 1);
     }
 
     windshield.setColor(glass);
-    windshield.drawDiamond();
+    windshield.drawDiamond(50, 40);
 
     rearWindshield.setColor(glass);
     rearWindshield.draw();

@@ -65,8 +65,8 @@ public:
 
     /* Draw */
     void draw() const override;
-    void drawTrapezoid();
-    void drawDiamond();
+    void drawTrapezoid(int deltaX, int deltaY);
+    void drawDiamond(int deltaX, int deltaY);
 
 };
 

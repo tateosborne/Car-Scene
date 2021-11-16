@@ -169,27 +169,27 @@ void Rect::draw() const {
     glEnd();
 }
 
-void Rect::drawTrapezoid() {
+void Rect::drawTrapezoid(int deltaX, int deltaY) {
     glBegin(GL_QUADS);
     glColor3f(fill.red, fill.green, fill.blue);
     int centerX = getCenterX();
     int centerY = getCenterY();
-    glVertex2i(centerX + 5, centerY - 1);
-    glVertex2i(centerX - 5, centerY - 1);
-    glVertex2i(centerX - 10, centerY + 2);
-    glVertex2i(centerX + 10, centerY + 2);
+    glVertex2i(centerX + deltaX, centerY - deltaY);
+    glVertex2i(centerX - deltaX, centerY - deltaY);
+    glVertex2i(centerX - (2*deltaX), centerY + (2*deltaY));
+    glVertex2i(centerX + (2*deltaX), centerY + (2*deltaY));
     glEnd();
 
 }
 
-void Rect::drawDiamond() {
+void Rect::drawDiamond(int deltaX, int deltaY) {
     glBegin(GL_QUADS);
     glColor3f(fill.red, fill.green, fill.blue);
     int centerX = getCenterX();
     int centerY = getCenterY();
-    glVertex2i(centerX, centerY - 40);
-    glVertex2i(centerX - 50, centerY);
-    glVertex2i(centerX, centerY + 40);
-    glVertex2i(centerX + 50, centerY);
+    glVertex2i(centerX, centerY - deltaY);
+    glVertex2i(centerX - deltaX, centerY);
+    glVertex2i(centerX, centerY + deltaY);
+    glVertex2i(centerX + deltaX, centerY);
     glEnd();
 }
