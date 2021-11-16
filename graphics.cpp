@@ -59,8 +59,6 @@ direction bearing = east;
 int shiftX = 500;
 int shiftY = 40;
 
-Circle test;
-
 void initSun() {
     sun.setCenter(500, 0);
     sun.setRadius(60);
