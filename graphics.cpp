@@ -28,7 +28,7 @@ const color magenta(1, 0, 1);
 const color cyan (0, 1, 1);
 const color silver(191/255.0,193/255.0,194/255.0);
 const color asphalt(82/255.0,77/255.0,80/255.0);
-const color steel(67/255.0, 70/255.0, 75/255.0);
+const color steel(57/255.0, 60/255.0, 85/255.0);
 const color glass(240/255.0, 255/255.0, 255/255.0);
 const color skyBlue(135/255.0, 206/255.0, 235/255.0);
 const color orangeYellow(255/255.0, 174/255.0, 66/255.0);
