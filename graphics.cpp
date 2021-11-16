@@ -28,20 +28,24 @@ const color glass(240/255.0, 255/255.0, 255/255.0);
 const color asphalt(82/255.0,77/255.0,80/255.0);
 const color skyBlue(135/255.0, 206/255.0, 235/255.0);
 const color raspberry(227/255.0, 11/255.0, 93/255.0);
-const color purple(119/255.0, 11/255.0, 224/255.0);
 const color orangeYellow(255/255.0, 174/255.0, 66/255.0);
+const color paleYellow(255/255.0, 255/255.0, 191/255.0);
+const color palePurple(145/255.0, 128/255.0, 191/255.0);
+const color paleRed(221/255.0, 68/255.0, 17/255.0);
 
 Rect carBase;
 Rect carRoof;
 Rect windshield;
-Rect headlight;
 Rect rearWindow;
 Rect frontWindow;
+Circle headlight;
+Circle tailLight;
 Circle rearWindshield;
 Circle rearTyre;
 Circle rearInnerWheel;
 Circle frontTyre;
 Circle frontInnerWheel;
+Circle sun;
 Rect road;
 vector<unique_ptr<Shape>> clouds;
 vector<Rect> roadLines;
@@ -51,32 +55,72 @@ direction bearing = east;
 int shiftX = 500;
 int shiftY = 40;
 
+void initSun() {
+    sun.setCenter(500, 0);
+    sun.setRadius(60);
+    sun.setColor(yellow);
+}
+
 void initCarBase() {
-    if (bearing == east) {
+    if (lane == top && bearing == east) {
         carBase.setCenter(200, 390);
         carBase.setSize(240, 65);
-        carBase.setColor(raspberry);
+        carBase.setColor(palePurple);
 
-        headlight.setCenter(310, 367);
-        headlight.setSize(10, 10);
-        headlight.setColor(yellow);
+        tailLight.setCenter(80, 370);
+        tailLight.setRadius(10);
+        tailLight.setColor(paleRed);
+
+        headlight.setCenter(320, 370);
+        headlight.setRadius(10);
+        headlight.setColor(paleYellow);
     }
-    if (bearing == west) {
+    if (lane == top && bearing == west) {
         carBase.setCenter(shiftX - 200, 390);
         carBase.setSize(240, 65);
-        carBase.setColor(raspberry);
+        carBase.setColor(palePurple);
 
-        headlight.setCenter(shiftX - 310, 367);
-        headlight.setSize(10, 10);
-        headlight.setColor(yellow);
+        tailLight.setCenter(shiftX - 80, 370);
+        tailLight.setRadius(10);
+        tailLight.setColor(paleRed);
+
+        headlight.setCenter(shiftX - 320, 367);
+        headlight.setRadius(10);
+        headlight.setColor(paleYellow);
+    }
+    if (lane == bottom && bearing == east) {
+        carBase.setCenter(200, 390 + shiftY);
+        carBase.setSize(240, 65);
+        carBase.setColor(palePurple);
+
+        tailLight.setCenter(80, 370 + shiftY);
+        tailLight.setRadius(10);
+        tailLight.setColor(paleRed);
+
+        headlight.setCenter(320, 370 + shiftY);
+        headlight.setRadius(10);
+        headlight.setColor(paleYellow);
+    }
+    if (lane == bottom && bearing == west) {
+        carBase.setCenter(shiftX - 200, 390 + shiftY);
+        carBase.setSize(240, 65);
+        carBase.setColor(palePurple);
+
+        tailLight.setCenter(shiftX - 80, 370 + shiftY);
+        tailLight.setRadius(10);
+        tailLight.setColor(paleRed);
+
+        headlight.setCenter(shiftX - 320, 370 + shiftY);
+        headlight.setRadius(10);
+        headlight.setColor(paleYellow);
     }
 }
 
 void initCarRoof() {
-    if (bearing == east) {
+    if (lane == top && bearing == east) {
         carRoof.setCenter(180, 360);
         carRoof.setSize(100, 80);
-        carRoof.setColor(raspberry);
+        carRoof.setColor(palePurple);
 
         rearWindow.setCenter(160, 340);
         rearWindow.setSize(35, 30);
@@ -86,10 +130,10 @@ void initCarRoof() {
         frontWindow.setSize(35, 30);
         frontWindow.setColor(glass);
     }
-    if (bearing == west) {
+    if (lane == top && bearing == west) {
         carRoof.setCenter(shiftX - 180, 360);
         carRoof.setSize(100, 80);
-        carRoof.setColor(raspberry);
+        carRoof.setColor(palePurple);
 
         rearWindow.setCenter(shiftX - 160, 340);
         rearWindow.setSize(35, 30);
@@ -99,18 +143,44 @@ void initCarRoof() {
         frontWindow.setSize(35, 30);
         frontWindow.setColor(glass);
     }
+    if (lane == bottom && bearing == east) {
+        carRoof.setCenter(180, 360 + shiftY);
+        carRoof.setSize(100, 80);
+        carRoof.setColor(palePurple);
+
+        rearWindow.setCenter(160, 340 + shiftY);
+        rearWindow.setSize(35, 30);
+        rearWindow.setColor(glass);
+
+        frontWindow.setCenter(200, 340 + shiftY);
+        frontWindow.setSize(35, 30);
+        frontWindow.setColor(glass);
+    }
+    if (lane == bottom && bearing == west) {
+        carRoof.setCenter(shiftX - 180, 360 + shiftY);
+        carRoof.setSize(100, 80);
+        carRoof.setColor(palePurple);
+
+        rearWindow.setCenter(shiftX - 160, 340 + shiftY);
+        rearWindow.setSize(35, 30);
+        rearWindow.setColor(glass);
+
+        frontWindow.setCenter(shiftX - 200, 340 + shiftY);
+        frontWindow.setSize(35, 30);
+        frontWindow.setColor(glass);
+    }
 }
 
 void initWindshield() {
-    if (bearing == east) {
+    if (lane == top && bearing == east) {
         windshield.setCenter(230, 360);
         windshield.setColor(glass);
 
         rearWindshield.setCenter(140, 360);
-        rearWindshield.setColor(glass);
         rearWindshield.setRadius(35);
+        rearWindshield.setColor(glass);
     }
-    if (bearing == west) {
+    if (lane == top && bearing == west) {
         windshield.setCenter(shiftX - 230, 360);
         windshield.setColor(glass);
 
@@ -118,10 +188,26 @@ void initWindshield() {
         rearWindshield.setColor(glass);
         rearWindshield.setRadius(35);
     }
+    if (lane == bottom && bearing == east) {
+        windshield.setCenter(230, 360 + shiftY);
+        windshield.setColor(glass);
+
+        rearWindshield.setCenter(140, 360 + shiftY);
+        rearWindshield.setRadius(35);
+        rearWindshield.setColor(glass);
+    }
+    if (lane == bottom && bearing == west) {
+        windshield.setCenter(shiftX - 230, 360 + shiftY);
+        windshield.setColor(glass);
+
+        rearWindshield.setCenter(shiftX - 140, 360 + shiftY);
+        rearWindshield.setColor(glass);
+        rearWindshield.setRadius(35);
+    }
 }
 
 void initWheel() {
-    if (bearing == east) {
+    if (lane == top && bearing == east) {
         rearTyre.setCenter(125, 420);
         rearTyre.setRadius(30);
         rearTyre.setColor(black);
@@ -138,7 +224,7 @@ void initWheel() {
         frontInnerWheel.setRadius(15);
         frontInnerWheel.setColor(silver);
     }
-    if (bearing == west) {
+    if (lane == top && bearing == west) {
         rearTyre.setCenter(shiftX - 125, 420);
         rearTyre.setRadius(30);
         rearTyre.setColor(black);
@@ -152,6 +238,40 @@ void initWheel() {
         frontTyre.setColor(black);
 
         frontInnerWheel.setCenter(shiftX - 275, 420);
+        frontInnerWheel.setRadius(15);
+        frontInnerWheel.setColor(silver);
+    }
+    if (lane == bottom && bearing == east) {
+        rearTyre.setCenter(125, 420 + shiftY);
+        rearTyre.setRadius(30);
+        rearTyre.setColor(black);
+
+        rearInnerWheel.setCenter(125, 420 + shiftY);
+        rearInnerWheel.setRadius(15);
+        rearInnerWheel.setColor(silver);
+
+        frontTyre.setCenter(275, 420 + shiftY);
+        frontTyre.setRadius(30);
+        frontTyre.setColor(black);
+
+        frontInnerWheel.setCenter(275, 420 + shiftY);
+        frontInnerWheel.setRadius(15);
+        frontInnerWheel.setColor(silver);
+    }
+    if (lane == bottom && bearing == west) {
+        rearTyre.setCenter(shiftX - 125, 420 + shiftY);
+        rearTyre.setRadius(30);
+        rearTyre.setColor(black);
+
+        rearInnerWheel.setCenter(shiftX - 125, 420 + shiftY);
+        rearInnerWheel.setRadius(15);
+        rearInnerWheel.setColor(silver);
+
+        frontTyre.setCenter(shiftX - 275, 420 + shiftY);
+        frontTyre.setRadius(30);
+        frontTyre.setColor(black);
+
+        frontInnerWheel.setCenter(shiftX - 275, 420 + shiftY);
         frontInnerWheel.setRadius(15);
         frontInnerWheel.setColor(silver);
     }
@@ -212,9 +332,10 @@ void init() {
     width = 500;
     height = 500;
     srand(time(0));
-    initWindshield();
+    initSun();
     initCarBase();
     initCarRoof();
+    initWindshield();
     initWheel();
     initRoad();
     initClouds();
@@ -248,6 +369,9 @@ void display() {
      * Draw here
      */
 
+    sun.setColor(yellow);
+    sun.draw();
+
     for (unique_ptr<Shape> &s : clouds) {
         // #polymorphism
         s->draw();
@@ -260,96 +384,41 @@ void display() {
         r.drawTrapezoid();
     }
 
-    if (lane == top) {
-        windshield.setCenterY( 360);
-        windshield.setColor(glass);
-        windshield.drawDiamond();
+    windshield.setColor(glass);
+    windshield.drawDiamond();
 
-        rearWindshield.setCenterY(360);
-        rearWindshield.setColor(glass);
-        rearWindshield.draw();
+    rearWindshield.setColor(glass);
+    rearWindshield.draw();
 
-        carBase.setCenterY(390);
-        carBase.setColor(raspberry);
-        carBase.draw();
+    tailLight.setColor(paleRed);
+    tailLight.draw();
 
-        carRoof.setCenterY(360);
-        carRoof.setColor(raspberry);
-        carRoof.draw();
+    headlight.setColor(paleYellow);
+    headlight.draw();
 
-        rearWindow.setCenterY(340);
-        rearWindow.setColor(glass);
-        rearWindow.draw();
+    carBase.setColor(palePurple);
+    carBase.draw();
 
-        frontWindow.setCenterY(340);
-        frontWindow.setColor(glass);
-        frontWindow.draw();
+    carRoof.setColor(palePurple);
+    carRoof.draw();
 
-        headlight.setCenterY(367);
-        headlight.setColor(yellow);
-        headlight.draw();
+    rearWindow.setColor(glass);
+    rearWindow.draw();
 
-        rearTyre.setCenterY(420);
-        rearTyre.setColor(black);
-        rearTyre.draw();
+    frontWindow.setColor(glass);
+    frontWindow.draw();
 
-        frontTyre.setCenterY(420);
-        frontTyre.setColor(black);
-        frontTyre.draw();
+    rearTyre.setColor(black);
+    rearTyre.draw();
 
-        rearInnerWheel.setCenterY(420);
-        rearInnerWheel.setColor(silver);
-        rearInnerWheel.draw();
+    frontTyre.setColor(black);
+    frontTyre.draw();
 
-        frontInnerWheel.setCenterY(420);
-        frontInnerWheel.setColor(silver);
-        frontInnerWheel.draw();
-    }
-    if (lane == bottom) {
-        windshield.setCenterY(360 + shiftY);
-        windshield.setColor(glass);
-        windshield.drawDiamond();
+    rearInnerWheel.setColor(silver);
+    rearInnerWheel.draw();
 
-        rearWindshield.setCenterY(360 + shiftY);
-        rearWindshield.setColor(glass);
-        rearWindshield.draw();
-
-        carBase.setCenterY(390 + shiftY);
-        carBase.setColor(raspberry);
-        carBase.draw();
-
-        carRoof.setCenterY(360 + shiftY);
-        carRoof.setColor(raspberry);
-        carRoof.draw();
-
-        rearWindow.setCenterY(340 + shiftY);
-        rearWindow.setColor(glass);
-        rearWindow.draw();
-
-        frontWindow.setCenterY(340 + shiftY);
-        frontWindow.setColor(glass);
-        frontWindow.draw();
-
-        headlight.setCenterY(367 + shiftY);
-        headlight.setColor(yellow);
-        headlight.draw();
-
-        rearTyre.setCenterY(420 + shiftY);
-        rearTyre.setColor(black);
-        rearTyre.draw();
-
-        frontTyre.setCenterY(420 + shiftY);
-        frontTyre.setColor(black);
-        frontTyre.draw();
-
-        rearInnerWheel.setCenterY(420 + shiftY);
-        rearInnerWheel.setColor(silver);
-        rearInnerWheel.draw();
-
-        frontInnerWheel.setCenterY(420 + shiftY);
-        frontInnerWheel.setColor(silver);
-        frontInnerWheel.draw();
-    }
+    frontInnerWheel.setColor(silver);
+    frontInnerWheel.draw();
 
     glFlush();  // Render now
 }
