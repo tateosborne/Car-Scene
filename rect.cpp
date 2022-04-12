@@ -157,9 +157,7 @@ bool Rect::isOverlapping(const Rect &r) const {
     return overlap;
 }
 
-// TODO: Implement this method
 void Rect::draw() const {
-    // Don't forget to set the color to the fill field
     glBegin(GL_QUADS);
     glColor3f(fill.red, fill.green, fill.blue);
     glVertex2i(getLeftX(),getTopY());

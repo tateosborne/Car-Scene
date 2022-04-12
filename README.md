@@ -1,9 +1,8 @@
-# Car Scene (Module 4, OEP)
+# Car Scene
 #### Tate Osborne ~ November 19, 2021
 
-Have fun watching a car drive along a road!
-This project displays a scene that looks like a car driving on a road. There are a few different commands that you,
-as the user, can do to change the scene.
+Have fun playing with a car driving along a road!
+This project displays a scene of a car driving. There are a few different commands that you can do to change the scene.
 
 ### Controls:
 _(Note that the initial states of the car is moving east (right) in the top lane.)_
@@ -13,11 +12,3 @@ _(Note that the initial states of the car is moving east (right) in the top lane
 - `right` (arrow): Changes the car's direction to the east (right).
 
 The only way to exit the screen is to press the `esc` button on your keyboard.
-
-```
-Personally, I believe that I deserve the full 50 points on this project. I demonstrate my understanding of locating
-different objects, calling modifiers on these objects, showing objects that move (i.e. once off the screen, it wraps
-around to pass through again), and the project is robust. I also have multiple objects in my graphics scene, and have
-more keyboard listeners than necessary for the project. I implemented new methods for drawing trapezoids and diamonds as well.
-Lastly, (I think) the project looks pretty cool too.
-```
